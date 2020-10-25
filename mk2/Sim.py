@@ -12,7 +12,8 @@ from Picker import Picker
 from Order import Order
 
 class Sim:
-  def __init__(self, period='2y', timedelay=100, window=100, timestep=5, budget=5000, stockPicks=10, sl=-0.1, tp=0.25, ts=0.2, ts_threshold=0.05, avoidDowntrends=True, sellAllOnCrash=True):
+  def __init__(self, period='2y', timedelay=100, window=100, timestep=5, budget=5000, stockPicks=10, sl=-0.1, tp=0.25, ts=0.2, ts_threshold=0.05, avoidDowntrends=True, sellAllOnCrash=True, neptune=None):
+    self.neptune	= neptune # neptune.ai logging
     self.period     = period
     self.timedelay  = timedelay
     self.timestep   = timestep
@@ -66,8 +67,14 @@ class Sim:
     self.stats = pd.DataFrame(columns=['invested','portfolio_value','Positions','closed','opened','cash','total_value','portfolio_resistances','portfolio_supports','drawdown','drawdown_pct'])
     while self.current_index+self.timestep < len(self.downloader.prices):
       output = self.tick()
+      # Neptune logging
+      if self.neptune is not None:
+        for k in list(output.keys()):
+          self.neptune.log_metric(k, output[k])
       output['date'] = self.downloader.prices.index[self.current_index]
       self.stats = self.stats.append(output, ignore_index=True)
+      
+      
       stepN = stepN + 1
       pct = math.ceil((stepN/steps)*100)
       if self.is_notebook == True:

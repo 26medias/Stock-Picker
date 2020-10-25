@@ -7,12 +7,13 @@ import math
 from TradingZones import TradingZones
 
 class Analysis:
-  def __init__(self, stats, positions, prices):
+  def __init__(self, stats, positions, prices, neptune=None):
+    self.neptune	= neptune # neptune.ai logging
     self.stats      = stats
     self.positions  = positions
     self.prices     = prices
   
-  def chart(self, filename='analysis.png'):
+  def chart(self, filename=None):
     zt = TradingZones(prices=self.prices)
     zones = zt.get()
     #print(zones)
@@ -84,7 +85,13 @@ class Analysis:
     axs[3].legend(shadow=True, fancybox=True)
     axs[4].legend(shadow=True, fancybox=True)
     axs[5].legend(shadow=True, fancybox=True)
-    plt.savefig(filename)
+    
+    if self.neptune is not None:
+      self.neptune.log_image('Output', fig)
+    elif filename is not None:
+      plt.savefig(filename)
+    else:
+      plt.show()
     return self.stats
 
   def chartPies(self, figsize=(5,5)):
