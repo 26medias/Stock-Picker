@@ -1,0 +1,42 @@
+[Folders]
+.+AFw-="1"
+.+AFw- - mk2="1"
+
+[Open File Tabs]
+Tab0="0,500201,0,1000000"
+Tab1="500201,499798,0,1000000"
+
+[Open Files]
+Active File Display Mode="1"
+Active File Index="1"
+Open File Line0="0"
+Open File Line1="3803"
+Open File Line2="1729"
+Open File Line3="0"
+Open File Line4="0"
+Open File Pos0="910"
+Open File Pos1="4999"
+Open File Pos2="2867"
+Open File Pos3="3368"
+Open File Pos4="1330"
+Open File Tab Pos0="0"
+Open File Tab Pos1="0"
+Open File Tab Pos2="0"
+Open File Tab Pos3="1"
+Open File Tab Pos4="1"
+Open File Window Pos0="0,1,-1,-1,-1,-1,5,31,989,1385"
+Open File Window Pos1="0,1,-1,-1,-1,-1,5,31,989,1385"
+Open File Window Pos2="0,1,-1,-1,-1,-1,5,31,989,1385"
+Open File Window Pos3="0,1,-1,-1,-1,-1,1248,31,1984,1385"
+Open File Window Pos4="0,1,-1,-1,-1,-1,1248,31,1984,1385"
+Open File0=".\mk2\main.py"
+Open File1=".\mk2\Watcher.py"
+Open File2=".\mk2\Sim.py"
+Open File3=".\mk2\Portfolio.py"
+Open File4=".\mk2\Downloader.py"
+Remember Files="1"
+
+[Project Information]
+Project Start="E4070A00050017000A000E002900000052"
+Working Time="8483"
+
