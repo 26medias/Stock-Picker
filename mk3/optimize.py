@@ -15,11 +15,11 @@ if not os.path.exists('data'):
 	os.makedirs('data')
 
 
-hyperparameters_init={'sl': -0.04733475134683593, 'tp': 1.4332521489302732, 'ts': 0.2815256642327791, 'ts_threshold': 0.03697953633025906, 'w_dfh': 0.6, 'w_sharpe': 0.2, 'w_100d': 0.2, 'v_100d': 0.3, 'v_dfh': 0.05, 'v_rfl': 0.01}
+hyperparameters_init={"sl": -0.06, "tp": 2, "ts": -0.02, "v_100d": 0.24531455566424112, "v_dfh": 0.05274405649047917, "v_rfl": 0.01703439651254952, "w_100d": 0.19102857670958306, "w_dfh": 0.5799832209142695, "w_sharpe": 0.655623531391156}
 
 
 neptune.init('leap-forward/sandbox')
-neptune.create_experiment('mk3', upload_source_files=['*.py'])
+neptune.create_experiment('mk4', upload_source_files=['*.py'])
 
 
 def train_evaluate(search_params):
@@ -71,8 +71,7 @@ def train_evaluate(search_params):
 SPACE = [
 	skopt.space.Real(-0.2, -0.01, name='sl'),
 	skopt.space.Real(0.005, 3.0, name='tp'),
-	skopt.space.Real(0.005, 0.5, name='ts'),
-	skopt.space.Real(0.005, 0.25, name='ts_threshold'),
+	skopt.space.Real(-0.2, -0.005, name='ts'),
 	skopt.space.Real(0.1, 0.8, name='w_dfh'),
 	skopt.space.Real(0.1, 0.8, name='w_sharpe'),
 	skopt.space.Real(0.1, 0.8, name='w_100d'),

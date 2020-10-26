@@ -12,7 +12,7 @@ from Picker import Picker
 from Order import Order
 
 class Sim:
-  def __init__(self, period='2y', timedelay=100, window=100, timestep=5, budget=5000, stockPicks=10, sl=-0.1, tp=0.25, ts=0.2, ts_threshold=0.05, avoidDowntrends=True, sellAllOnCrash=True, neptune=None, pick_kwargs={}):
+  def __init__(self, period='2y', timedelay=100, window=100, timestep=5, budget=5000, stockPicks=10, sl=-0.1, tp=0.25, ts=0.2, avoidDowntrends=True, sellAllOnCrash=True, neptune=None, pick_kwargs={}):
     self.neptune	= neptune # neptune.ai logging
     self.period     = period
     self.timedelay  = timedelay
@@ -22,7 +22,6 @@ class Sim:
     self.sl         = sl
     self.tp         = tp
     self.ts         = ts
-    self.ts_threshold = ts_threshold
     self.avoidDowntrends = avoidDowntrends
     self.sellAllOnCrash = sellAllOnCrash
     self.pick_kwargs = pick_kwargs
@@ -58,7 +57,7 @@ class Sim:
 	    percents = round(100.0 * count / float(total), 1)
 	    bar = '=' * filled_len + '-' * (bar_len - filled_len)
 
-	    sys.stdout.write('[%s] %s%s ...%s\r' % (bar, percents, '%', status))
+	    sys.stdout.write('[%s] %s%s\r' % (bar, percents, '%'))
 	    sys.stdout.flush()
   
   def run(self):
@@ -111,7 +110,6 @@ class Sim:
     
     # Activate the trailing stops
     targets   = self.portfolio.getPositionsBelowTS(self.ts)
-    targets   = targets[targets['high_pct']>=self.ts_threshold]
     if len(targets) > 0:
       sell_orders = self.portfolio.getSellOrdersFromSubset(subset=targets)
       #print("\n-----------\n",targets,"\n\n",sell_orders)
