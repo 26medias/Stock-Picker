@@ -62,7 +62,7 @@ def train_evaluate(search_params):
 	
 	neptune.log_text('report', json.dumps(report, indent=2, sort_keys=True))
 	
-	if math.isnan(sharpe):
+	if math.isnan(sharpe) or math.isinf(sharpe):
 		return 0
 	
 	return sharpe

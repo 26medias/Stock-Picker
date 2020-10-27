@@ -29,7 +29,6 @@ class Watcher:
 		self.sl         = hyperparameters['sl']
 		self.tp         = hyperparameters['tp']
 		self.ts         = hyperparameters['ts']
-		self.ts_threshold = hyperparameters['ts_threshold']
 		self.avoidDowntrends = avoidDowntrends
 		self.sellAllOnCrash = sellAllOnCrash
 	
@@ -67,8 +66,7 @@ class Watcher:
 		output = pd.DataFrame()
 		
 		# Activate the trailing stops
-		targets 	= self.portfolio.getPositionsBelowTS(self.ts)
-		targets 	= targets[targets['high_pct']>=self.ts_threshold]
+		targets   = self.portfolio.getPositionsBelowTS(self.ts)
 		if len(targets) > 0:
 			sell_orders = self.portfolio.getSellOrdersFromSubset(subset=targets)
 			print("\n----- TS -----\n",sell_orders)
