@@ -49,8 +49,6 @@ def train_evaluate(search_params):
 	sharpe = analysis.sharpe()
 	stats = sim.portfolio.summary()
 	
-	neptune.log_text('report', json.dumps(report, indent=2, sort_keys=True))
-	
 	if math.isnan(sharpe) or math.isinf(sharpe) or sharpe <= -2 or sharpe >= 5:
 		sharpe = -5
 	
@@ -64,6 +62,9 @@ def train_evaluate(search_params):
 		'end_value': stats['total_value'],
 		'gains': (stats['total_value']-5000.0)/5000.0
 	}
+	
+	
+	neptune.log_text('report', json.dumps(report, indent=2, sort_keys=True))
 	
 	return sharpe
 
