@@ -73,12 +73,12 @@ SPACE = [
 	skopt.space.Real(-0.2, -0.01, name='sl'),
 	skopt.space.Real(0.005, 3.0, name='tp'),
 	skopt.space.Real(-0.2, -0.005, name='ts'),
-	skopt.space.Real(0.1, 0.8, name='w_dfh'),
-	skopt.space.Real(0.1, 0.8, name='w_sharpe'),
-	skopt.space.Real(0.1, 0.8, name='w_100d'),
 	skopt.space.Real(0.1, 0.5, name='v_100d'),
 	skopt.space.Real(0.005, 0.25, name='v_dfh'),
-	skopt.space.Real(0.005, 0.25, name='v_rfl')
+	skopt.space.Real(0.005, 0.25, name='v_rfl'),
+	skopt.space.Real(0.1, 0.8, name='w_100d'),
+	skopt.space.Real(0.1, 0.8, name='w_dfh'),
+	skopt.space.Real(0.1, 0.8, name='w_sharpe'),
 ]
 
 
