@@ -19,7 +19,7 @@ hyperparameters_init={"sl": -0.06, "tp": 2, "ts": -0.02, "v_100d": 0.24531455566
 
 
 neptune.init('leap-forward/sandbox')
-neptune.create_experiment('mk4', upload_source_files=['*.py'])
+neptune.create_experiment('mk4_2y', upload_source_files=['*.py'])
 
 
 def train_evaluate(search_params):
@@ -36,7 +36,7 @@ def train_evaluate(search_params):
 	print('------------')
 	print(json.dumps(hyperparameters, indent=2, sort_keys=True))
 	
-	sim    = Sim(neptune=neptune, period='1y', timedelay=100, window=100, timestep=1, budget=5000, stockPicks=5, avoidDowntrends=True, sellAllOnCrash=False, **hyperparameters)
+	sim    = Sim(neptune=neptune, period='2y', timedelay=100, window=100, timestep=1, budget=5000, stockPicks=5, avoidDowntrends=True, sellAllOnCrash=False, **hyperparameters)
 	stats  = sim.run()
 
 	analysis = Analysis(neptune=neptune, stats=stats, positions=sim.portfolio.holdings, prices=sim.downloader.prices)
