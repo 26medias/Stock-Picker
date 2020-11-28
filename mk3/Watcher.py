@@ -153,7 +153,14 @@ class Watcher:
 		print(list(g.index))
 		print(prices.loc[date])
 		
-
+	def check(self, symbol='TSLA', period='6mo'):
+		# Download the stock data
+		self.downloader = Downloader(cache=False)
+		if symbol not in self.downloader.symbols:
+			self.downloader.add(symbol)
+			print('Symbol added to the watch list')
+		self.downloader.download(period=period, symbols=[symbol])
+		print(self.downloader.prices[symbol].tail(50))
 
 
 

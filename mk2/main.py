@@ -38,9 +38,13 @@ def Main():
 			else:
 				watcher = Watcher(filename='data/portfolio', hyperparameters=hyperparameters)
 				watcher.create(balance=float(sys.argv[2]))
+		
+		
 		elif sys.argv[1] == 'watch':
 			watcher = Watcher(filename='data/portfolio', hyperparameters=hyperparameters)
 			watcher.start()
+		
+		
 		elif sys.argv[1] == 'buy':
 			# main.py buy 20 AMD 81.26
 			if len(sys.argv) < 5:
@@ -48,6 +52,8 @@ def Main():
 			else:
 				executor = Executor(filename='data/portfolio', hyperparameters=hyperparameters)
 				print(executor.buy(symbol=sys.argv[3], count=int(sys.argv[2]), value=float(sys.argv[4])))
+		
+		
 		elif sys.argv[1] == 'sell':
 			# main.py sell 20 AMD 81.26
 			if len(sys.argv) < 5:
@@ -55,9 +61,13 @@ def Main():
 			else:
 				executor = Executor(filename='data/portfolio', hyperparameters=hyperparameters)
 				print(executor.sell(symbol=sys.argv[3], count=int(sys.argv[2]), value=float(sys.argv[4])))
+		
+		
 		elif sys.argv[1] == 'stats':
 			watcher = Watcher(filename='data/portfolio', hyperparameters=hyperparameters)
 			watcher.stats()
+		
+		
 		elif sys.argv[1] == 'sim':
 			from Sim import Sim
 			from Analysis import Analysis
@@ -74,6 +84,12 @@ def Main():
 			g = sim.portfolio.holdings.copy().groupby('label').sum()
 			g['profits_pct'] = (g['current_price']-g['purchase_price'])/g['purchase_price']*100
 			print(g)
+			
+			
+		elif sys.argv[1] == 'check':
+			watcher = Watcher(filename='data/portfolio', hyperparameters=hyperparameters)
+			watcher.check(sys.argv[2])
+			
 		else:
 			print("Unknown command")
 		

@@ -124,11 +124,11 @@ class Watcher:
 		
 		symbols = list(self.portfolio.holdings['symbol'].unique())
 		
+		print(symbols)
+		
 		if len(symbols)==0:
 			print("Nothing to update")
 			return False
-		elif len(symbols)==1:
-			symbols = symbols + ['MSFT','TSLA'] # otherwise single symbol = no multi-index = breaking
 		
 		# Download the stock data
 		self.downloader = Downloader(cache=False)
@@ -155,6 +155,15 @@ class Watcher:
 		print(list(g.index))
 		print(prices.loc[date])
 		
+	def check(self, symbol='TSLA', period='6mo'):
+		# Download the stock data
+		self.downloader = Downloader(cache=False)
+		if symbol not in self.downloader.symbols:
+			self.downloader.add(symbol)
+			print('Symbol added to the watch list')
+		self.downloader.download(period=period, symbols=[symbol])
+		print(self.downloader.prices[symbol].tail(50))
+		
 
 
 
@@ -168,10 +177,15 @@ class Executor:
 		self.portfolio  = Portfolio()
 		self.portfolio.load(self.filename)
 		self.downloader = Downloader(cache=False)
-		self.downloader.download(period='3mo')
 	
 	def buy(self, symbol, count, value):
 		print("Buying", count, "shares of", symbol, "at", value)
+		if symbol not in self.downloader.symbols:
+			self.downloader.add(symbol)
+		
+		symbols = list(self.portfolio.holdings['symbol'].unique())+[symbol]
+		
+		self.downloader.download(period='3mo', symbols=symbols)
 		date = self.downloader.prices.index[-1]
 		prices = self.downloader.prices
 		orders = pd.DataFrame()
@@ -192,6 +206,12 @@ class Executor:
 	
 	def sell(self, symbol, count, value):
 		print("Selling", count, "shares of", symbol, "at", value)
+		if symbol not in self.downloader.symbols:
+			self.downloader.add(symbol)
+		
+		symbols = list(self.portfolio.holdings['symbol'].unique())+[symbol]
+		
+		self.downloader.download(period='3mo', symbols=symbols)
 		date = self.downloader.prices.index[-1]
 		prices = self.downloader.prices
 		orders = pd.DataFrame()

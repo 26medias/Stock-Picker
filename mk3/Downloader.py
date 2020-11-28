@@ -52,12 +52,23 @@ class Downloader:
     return list(sectorRows[['Symbol']].values.flatten())
   
   def build(self):
-    self.prices = self.data.loc[:,('Adj Close', slice(None))]
+    if len(self.symbols)==1:
+      self.data.columns = pd.MultiIndex.from_product([[self.symbols[0]], self.data.columns])
+    self.prices = self.data.loc[:,pd.IndexSlice[:,'Adj Close']]
     if math.isnan(self.prices.iloc[0].max()):
       self.data = self.data.iloc[1:]
-      self.prices = self.data.loc[:,('Adj Close', slice(None))]
-    self.prices.columns = self.prices.columns.droplevel(0)
+      self.prices = self.data.loc[:,pd.IndexSlice[:,'Adj Close']]
+    self.prices.columns = self.prices.columns.droplevel(1)
     self.changes  = (self.prices-self.prices.shift())/self.prices.shift()
     self.returns  = (self.prices[:]-self.prices[:].loc[list(self.prices.index)[0]])/self.prices[:].loc[list(self.prices.index)[0]]
     self.sector_mean = self.returns[self.symbols].T.describe().T[['mean']]
+    self.sector_mean_val = self.prices[self.symbols].T.describe().T[['mean']]
     return self.stocklist.groupby('Sector').aggregate(['count'])
+  
+  def add(self, symbol):
+    if symbol in self.symbols:
+      return False
+    else:
+      info = yf.Ticker(symbol)
+      self.stocklist = self.stocklist.append({'Symbol':symbol,'Name':info.info['shortName'],'Sector':info.info['sector']}, ignore_index=True)
+      self.stocklist.to_csv('constituents.csv', index=False)

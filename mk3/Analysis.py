@@ -125,7 +125,10 @@ class Analysis:
   def sharpe(self):
     total_value = self.stats[['total_value']]
     returns  = (total_value[:]-total_value[:].loc[list(total_value.index)[0]])/total_value[:].loc[list(total_value.index)[0]]
-    return ((252**0.5) * returns.diff().mean() / returns.diff().std())['total_value']
+    sharpe = ((252**0.5) * returns.diff().mean() / returns.diff().std())['total_value']
+    if math.isnan(sharpe) or math.isinf(sharpe):
+    	return 0
+    return sharpe
   
   def positionStats(self):
     positives = self.positions[self.positions['profits']>0]
@@ -155,5 +158,5 @@ class Analysis:
         "value":      dict(self.stats.describe()['total_value']),
         "profits":    dict(self.positions.describe()['profits_pct']),
     }
-    return output, stats
+    return output, stats, _obj
 

@@ -40,8 +40,11 @@ def train_evaluate(search_params):
 	stats  = sim.run()
 
 	analysis = Analysis(neptune=neptune, stats=stats, positions=sim.portfolio.holdings, prices=sim.downloader.prices)
-	analysis.chart()
-	output, advanced_stats = analysis.positionStats()
+	#analysis.chart()
+	output, advanced_stats, obj_stats = analysis.positionStats()
+	
+	for k in list(obj_stats.keys()):
+		neptune.log_metric(k, obj_stats[k])
 	
 	print(output)
 	
@@ -52,9 +55,9 @@ def train_evaluate(search_params):
 	if math.isnan(sharpe) or math.isinf(sharpe) or sharpe <= -2 or sharpe >= 5:
 		sharpe = -5
 	
-	neptune.log_metric('sharpe', sharpe)
-	neptune.log_metric('start_value', 5000)
-	neptune.log_metric('end_value', stats['total_value'])
+	#neptune.log_metric('sharpe', sharpe)
+	#neptune.log_metric('start_value', 5000)
+	#neptune.log_metric('end_value', stats['total_value'])
 	
 	report = {
 		'hyperparameters': hyperparameters,
